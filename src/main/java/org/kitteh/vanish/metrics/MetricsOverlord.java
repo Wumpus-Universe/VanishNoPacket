@@ -15,7 +15,7 @@ public final class MetricsOverlord {
     private static Tracker joininvis = new Tracker("");
     private static Metrics metrics;
 
-    private static final String[] PERMS_PLUGINS = {"DroxPerms", "GroupManager", "PermissionsBukkit", "PermissionsEx", "Privileges", "SimplyPerms", "Starburst", "bPermissions", "zPermissions"};
+    private static final String[] PERMS_PLUGINS = {"LuckPerms"};
 
     public static Tracker getCommandTracker() {
         return MetricsOverlord.command;
@@ -73,17 +73,17 @@ public final class MetricsOverlord {
             MetricsOverlord.metrics.addCustomData(MetricsOverlord.joininvis);
             MetricsOverlord.metrics.createGraph("Permissions").addPlotter(new Counter(MetricsOverlord.getPermsPlugin(plugin)));
             MetricsOverlord.metrics.createGraph("Online Mode").addPlotter(new Counter(plugin.getServer().getOnlineMode() ? "Online" : "Offline"));
-            MetricsOverlord.metrics.createGraph("TagAPI").addPlotter(new Counter(plugin.getServer().getPluginManager().isPluginEnabled("TagAPI") ? "Yup" : "Nope"));
             MetricsOverlord.metrics.start();
         } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 
     private static String getPermsPlugin(VanishPlugin plugin) {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
-        for (final String permsplugin : MetricsOverlord.PERMS_PLUGINS) {
-            if (pluginManager.isPluginEnabled(permsplugin)) {
-                return permsplugin;
+        for (final String permissionsplugin : MetricsOverlord.PERMS_PLUGINS) {
+            if (pluginManager.isPluginEnabled(permissionsplugin)) {
+                return permissionsplugin;
             }
         }
         return "Unknown or None";

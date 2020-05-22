@@ -70,6 +70,11 @@ public final class VanishCommand implements CommandExecutor {
                             list.append(ChatColor.DARK_AQUA);
                             list.append(',');
                         }
+
+                        else {
+                            list.append(ChatColor.RED + "No one is currently vanished.");
+                        }
+
                         list.append(ChatColor.AQUA);
                         list.append(player.getName());
                     }

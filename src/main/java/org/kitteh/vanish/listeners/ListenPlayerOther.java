@@ -99,9 +99,6 @@ public final class ListenPlayerOther implements Listener {
                 case BREWING_STAND:
                     inventory = ((BrewingStand) blockState).getInventory();
                     break;
-                case BEACON:
-                    inventory = ((Beacon) blockState).getInventory();
-                    break;
             }
             if (inventory != null) {
                 event.setCancelled(true);
@@ -117,7 +114,7 @@ public final class ListenPlayerOther implements Listener {
             event.setCancelled(true);
             return;
         }
-        if ((event.getAction() == Action.PHYSICAL) && (event.getClickedBlock().getType() == Material.SOIL)) {
+        if ((event.getAction() == Action.PHYSICAL) && (event.getClickedBlock().getType() == Material.LEGACY_SOIL)) {
             if (this.plugin.getManager().isVanished(player) && VanishPerms.canNotTrample(player)) {
                 event.setCancelled(true);
             }

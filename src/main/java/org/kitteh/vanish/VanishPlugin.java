@@ -18,8 +18,6 @@ import org.kitteh.vanish.listeners.ListenPlayerMessages;
 import org.kitteh.vanish.listeners.ListenPlayerOther;
 import org.kitteh.vanish.listeners.ListenServerPing;
 import org.kitteh.vanish.listeners.ListenToYourHeart;
-import org.kitteh.vanish.listeners.TagAPIListener;
-import org.kitteh.vanish.metrics.MetricsOverlord;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,11 +30,6 @@ import java.util.HashSet;
 
 public final class VanishPlugin extends JavaPlugin {
     final class UpdateCheck implements Runnable {
-        private static final String CREDITS = "This updater code is based on the great work of Gravity";
-
-        String getCredits() {
-            return CREDITS;
-        }
 
         private final VanishPlugin plugin;
 
@@ -282,51 +275,12 @@ public final class VanishPlugin extends JavaPlugin {
 
         Settings.freshStart(this);
 
-        dance:
-        if (this.getConfig().getBoolean("colornametags", true)) {
-            if (this.getServer().getPluginManager().isPluginEnabled("TagAPI")) {
-                try {
-                    Class.forName("org.kitteh.tag.AsyncPlayerReceiveNameTagEvent");
-                } catch (final ClassNotFoundException e) {
-                    this.getLogger().warning("Update to TagAPI 3.0 or later to use name coloring");
-                    break dance;
-                }
-                this.getServer().getPluginManager().registerEvents(new TagAPIListener(this), this);
-                this.getLogger().info("Using color changing features of TagAPI.");
-            } else {
-                this.getLogger().info("Colored nametags enabled, but I couldn't find TagAPI");
-                this.getLogger().info("For awesome colored nametags on vanish, visit");
-                this.getLogger().info("http://dev.bukkit.org/server-mods/tag/ ");
-                this.getLogger().info("and download TagAPI.jar");
-            }
-        }
-
         if (this.getConfig().getBoolean("hooks.essentials", false)) {
             this.hookManager.getHook(HookType.Essentials).onEnable();
         }
-        this.hookManager.getHook(HookType.GeoIPTools).onEnable();
-        if (this.getConfig().getBoolean("hooks.dynmap", false)) {
-            this.hookManager.getHook(HookType.Dynmap).onEnable();
-        }
-        //if (this.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
-        //    this.hookManager.getHook(HookType.ProtocolLib).onEnable();
-        //}
 
         final VanishPlugin self = this;
         //Post-load stuff
-        this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-            @Override
-            public void run() {
-                if (VanishPlugin.this.getConfig().getBoolean("hooks.JSONAPI", false)) {
-                    VanishPlugin.this.hookManager.getHook(HookType.JSONAPI).onEnable();
-                }
-                MetricsOverlord.init(self);
-            }
-        }, 1);
-
-        if (this.getConfig().getBoolean("hooks.spoutcraft", false)) {
-            this.hookManager.getHook(HookType.SpoutCraft).onEnable();
-        }
 
         this.manager = new VanishManager(this);
 
